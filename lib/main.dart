@@ -123,6 +123,47 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool _showChart = false;
 
+  List<Widget> _buildLandscapeWidget(avaiHei) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const Text('Show Chart'),
+          Switch(
+              value: _showChart,
+              onChanged: (newValue) {
+                setState(() {
+                  _showChart = newValue;
+                });
+              }),
+        ],
+      ),
+      _showChart
+          ? SizedBox(
+              child: Chart(_recentTransactions),
+              height: avaiHei * 0.7,
+            )
+          //NewTransaction(addNewInList),
+          : SizedBox(
+              height: avaiHei * 0.7,
+              child: TransactionList(_userTransactions, deleteTransaction),
+            ),
+    ];
+  }
+
+  List<Widget> _buildPortraitWidget(avaiHei) {
+    return [
+      SizedBox(
+        child: Chart(_recentTransactions),
+        height: avaiHei * 0.3,
+      ),
+      SizedBox(
+        height: avaiHei * 0.7,
+        child: TransactionList(_userTransactions, deleteTransaction),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
@@ -152,43 +193,8 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            if (isLandscape)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text('Show Chart'),
-                  Switch(
-                      value: _showChart,
-                      onChanged: (newValue) {
-                        setState(() {
-                          _showChart = newValue;
-                        });
-                      }),
-                ],
-              ),
-            if (isLandscape)
-              _showChart
-                  ? SizedBox(
-                      child: Chart(_recentTransactions),
-                      height: avaiHei * 0.7,
-                    )
-                  //NewTransaction(addNewInList),
-                  : SizedBox(
-                      height: avaiHei * 0.7,
-                      child:
-                          TransactionList(_userTransactions, deleteTransaction),
-                    ),
-            if (!isLandscape)
-              SizedBox(
-                child: Chart(_recentTransactions),
-                height: avaiHei * 0.3,
-              ),
-            //NewTransaction(addNewInList),
-            if (!isLandscape)
-              SizedBox(
-                height: avaiHei * 0.7,
-                child: TransactionList(_userTransactions, deleteTransaction),
-              ),
+            if (isLandscape) ..._buildLandscapeWidget(avaiHei),
+            if (!isLandscape) ..._buildPortraitWidget(avaiHei),
           ],
         ),
       ),
