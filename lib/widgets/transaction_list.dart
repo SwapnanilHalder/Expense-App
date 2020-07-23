@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import '../models/transaction.dart';
+import './transaction_item.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> _transactionlist;
@@ -35,48 +36,7 @@ class TransactionList extends StatelessWidget {
             : ListView.builder(
                 itemCount: _transactionlist.length,
                 itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 5,
-                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                    child: ListTile(
-                      leading: Container(
-                        //padding: EdgeInsets.symmetric(vertical: 3, horizontal: 2),
-                        child: CircleAvatar(
-                          radius: 40,
-                          child: Padding(
-                            padding: EdgeInsets.all(5),
-                            child: FittedBox(
-                              child: Text(
-                                '\$${_transactionlist[index].amount.toStringAsFixed(2)}',
-                                //style: TextStyle(fontSize: 14),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      title: Text(
-                        _transactionlist[index].title,
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                      subtitle: Text(
-                        DateFormat.yMMMd().format(_transactionlist[index].date),
-                      ),
-                      trailing: MediaQuery.of(context).size.width > 460
-                          ? FlatButton.icon(
-                              onPressed: () =>
-                                  deleteTransaction(_transactionlist[index].id),
-                              icon: Icon(Icons.delete),
-                              label: Text("Delete"),
-                              textColor: Theme.of(context).errorColor,
-                            )
-                          : IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () =>
-                                  deleteTransaction(_transactionlist[index].id),
-                              color: Theme.of(context).errorColor,
-                            ),
-                    ),
-                  );
+                  return TransactionItem(transaction: _transactionlist[index], deleteTransaction: deleteTransaction);
                 })
         // : ListView(
         //     children: _transactionlist
@@ -130,3 +90,4 @@ class TransactionList extends StatelessWidget {
         );
   }
 }
+
