@@ -123,6 +123,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool _showChart = false;
 
+  AppBar appbar() {
+    return AppBar(
+      title: const Text('Expense Tracker'),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => startAddNewTransaction(context),
+          color: Colors.white,
+          //highlightColor: Colors.grey,
+        )
+      ],
+    );
+  }
+
   List<Widget> _buildLandscapeWidget(avaiHei) {
     return [
       Row(
@@ -166,17 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
-      title: const Text('Expense Tracker'),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => startAddNewTransaction(context),
-          color: Colors.white,
-          //highlightColor: Colors.grey,
-        )
-      ],
-    );
+    final appBar = appbar();
     final avaiHei = MediaQuery.of(context).size.height -
         (appBar.preferredSize.height + MediaQuery.of(context).padding.top);
     print('Available Height: $avaiHei px');
